@@ -8,6 +8,9 @@ class Employee {
     constructor() {
         // UC-6: Array to store daily wages
         this.dailyWageArray = [];
+        this.dailyHoursArray = [];
+        // UC-8: Map to store day-wise wages
+        this.dailyWageMap = new Map(); 
     }
 
     // UC-1: Ability to Check Employee is Present or Absent
@@ -75,20 +78,19 @@ class Employee {
         const MAX_WORKING_HOURS = 160;
         let totalWorkingHours = 0;
         let totalWorkingDays = 0;
-        let totalWage = 0;
 
         while (totalWorkingDays < MAX_WORKING_DAYS && totalWorkingHours < MAX_WORKING_HOURS) {
             totalWorkingDays++;
-            let workType = Math.floor(Math.random() * 3); // 0, 1, or 2
+            let workType = Math.floor(Math.random() * 3); // 0-Absent, 1-Part Time, 2-Full Time
             let workHours = this.getWorkingHours(workType);
             totalWorkingHours += workHours;
             let dailyWage = this.calculateDailyWage(workHours);
-            this.dailyWageArray.push(dailyWage); // store in the class array
-            totalWage += dailyWage;
-        }
+            this.dailyWageArray.push(dailyWage);
+            this.dailyHoursArray.push(workHours);
 
-        console.log("Daily Wages: ", this.dailyWageArray);
-        return `Total Wage: $${totalWage}, Total Working Hours: ${totalWorkingHours}, Total Working Days: ${totalWorkingDays}`;
+            // UC-8: Storing day and wage in Map
+            this.dailyWageMap.set(totalWorkingDays, dailyWage);
+        }
     }
 
     // UC-7a: Calculate total wage using reduce
@@ -129,6 +131,12 @@ class Employee {
     getNumberOfDaysWorked() {
         return this.dailyWageArray.filter(wage => wage > 0).length;
     }
+    // UC-8: Total wage from Map
+    getTotalWageFromMap() {
+        let totalWage = 0;
+        this.dailyWageMap.forEach(wage => totalWage += wage);
+        return totalWage;
+    }
 }
 
 // Creating object of EmployeeAttendance class
@@ -159,3 +167,13 @@ console.log("First Full Time Wage Day:\n", employee.getFirstFullTimeWageDay());
 console.log("Every Full Time Wage is 160:", employee.checkEveryFullTimeWage());
 console.log("Any Part Time Wage Present:", employee.checkAnyPartTimeWage());
 console.log("Number of Days Worked:", employee.getNumberOfDaysWorked());
+
+
+// UC-08
+employee.calculateWageWithDailyStorage();
+console.log("Total Wage from Array: $", employee.getTotalWage());
+console.log("Total Wage from Map: $", employee.getTotalWageFromMap());
+console.log("Day-wise Wages from Map:");
+employee.dailyWageMap.forEach((wage, day) => {
+    console.log(`Day ${day}: $${wage}`);
+});
