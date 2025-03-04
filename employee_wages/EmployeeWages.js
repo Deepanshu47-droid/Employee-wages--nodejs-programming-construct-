@@ -46,6 +46,24 @@ class EmployeeAttendance {
 
         return `Total Monthly Wage for ${WORKING_DAYS} days is $${totalWage}`;
     }
+    // UC-5: Calculate Wage till total hours = 160 or days = 20
+    calculateWageWithCondition() {
+        const MAX_WORKING_DAYS = 20;
+        const MAX_WORKING_HOURS = 160;
+        let totalWorkingHours = 0;
+        let totalWorkingDays = 0;
+        let totalWage = 0;
+
+        while (totalWorkingDays < MAX_WORKING_DAYS && totalWorkingHours < MAX_WORKING_HOURS) {
+            totalWorkingDays++;
+            let workType = Math.floor(Math.random() * 3); // 0, 1, or 2
+            let workHours = this.getWorkingHours(workType);
+            totalWorkingHours += workHours;
+            totalWage += this.calculateDailyWage(workHours);
+        }
+
+        return `Total Wage: $${totalWage}, Total Working Hours: ${totalWorkingHours}, Total Working Days: ${totalWorkingDays}`;
+    }
 }
 
 // Creating object of EmployeeAttendance class
@@ -62,3 +80,6 @@ console.log(`Daily Wage is $${employee.calculateDailyWage()}`);
 
 // Running UC-4
 console.log(employee.calculateMonthlyWage());
+
+// Running UC-5
+console.log(employee.calculateWageWithCondition());
