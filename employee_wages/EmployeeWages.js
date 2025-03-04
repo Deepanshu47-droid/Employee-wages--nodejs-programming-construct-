@@ -12,19 +12,13 @@ class EmployeeAttendance {
         return (attendance === PRESENT) ? "Employee is Present" : "Employee is Absent";
     }
 
-    // UC-2: Ability to Calculate Daily Employee Wage based on part-time or full-time
+    // UC-2: Calculate Daily Employee Wage using getWorkingHours()
     calculateDailyWage() {
-        const IS_PART_TIME = 1;
-        const IS_FULL_TIME = 2;
-        const PART_TIME_HOURS = 4;
-        const FULL_TIME_HOURS = 8;
         const WAGE_PER_HOUR = 20;
         let workType = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
-
-        let workingHours = this.getWorkingHours(workType); 
-
+        let workingHours = this.getWorkingHours(workType);
         let dailyWage = workingHours * WAGE_PER_HOUR;
-        return `Daily Wage is $${dailyWage}`;
+        return dailyWage;
     }
 
     // UC-3: Function to get work hours based on work type  
@@ -41,6 +35,17 @@ class EmployeeAttendance {
                 return 0; // No work or absent  
         }  
     }  
+    // UC-4: Calculate Monthly Wage assuming 20 working days
+    calculateMonthlyWage() {
+        const WORKING_DAYS = 20;
+        let totalWage = 0;
+
+        for (let day = 1; day <= WORKING_DAYS; day++) {
+            totalWage += this.calculateDailyWage();
+        }
+
+        return `Total Monthly Wage for ${WORKING_DAYS} days is $${totalWage}`;
+    }
 }
 
 // Creating object of EmployeeAttendance class
@@ -52,5 +57,8 @@ console.log(employee.checkAttendance());
 // Running UC-2
 console.log(employee.calculateDailyWage());
 
-// Running UC-2 and UC-3  
-console.log(employee.calculateDailyWage());  
+// Running UC-2 and UC-3
+console.log(`Daily Wage is $${employee.calculateDailyWage()}`);
+
+// Running UC-4
+console.log(employee.calculateMonthlyWage());
