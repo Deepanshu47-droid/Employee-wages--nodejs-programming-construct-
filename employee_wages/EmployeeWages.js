@@ -90,6 +90,45 @@ class Employee {
         console.log("Daily Wages: ", this.dailyWageArray);
         return `Total Wage: $${totalWage}, Total Working Hours: ${totalWorkingHours}, Total Working Days: ${totalWorkingDays}`;
     }
+
+    // UC-7a: Calculate total wage using reduce
+    getTotalWage() {
+        return this.dailyWageArray.reduce((total, wage) => total + wage, 0);
+    }
+
+    // UC-7b: Show day with daily wage using map
+    getDayWithWages() {
+        return this.dailyWageArray.map((wage, index) => `Day ${index + 1}: $${wage}`);
+    }
+
+    // UC-7c: Days with Full Time Wage (160)
+    getFullTimeWageDays() {
+        return this.dailyWageArray
+            .map((wage, index) => ({ day: index + 1, wage }))
+            .filter(dayInfo => dayInfo.wage === 160);
+    }
+
+    // UC-7d: First occurrence of Full Time Wage
+    getFirstFullTimeWageDay() {
+        return this.dailyWageArray
+            .map((wage, index) => ({ day: index + 1, wage }))
+            .find(dayInfo => dayInfo.wage === 160);
+    }
+
+    // UC-7e: Check if every Full Time Wage is 160
+    checkEveryFullTimeWage() {
+        return this.dailyWageArray.every(wage => wage === 160);
+    }
+
+    // UC-7f: Check if any Part Time Wage (80)
+    checkAnyPartTimeWage() {
+        return this.dailyWageArray.some(wage => wage === 80);
+    }
+
+    // UC-7g: Number of days worked (wage > 0)
+    getNumberOfDaysWorked() {
+        return this.dailyWageArray.filter(wage => wage > 0).length;
+    }
 }
 
 // Creating object of EmployeeAttendance class
@@ -111,3 +150,12 @@ console.log(employee.calculateWageWithCondition());
 
 // Running UC-6
 console.log(employee.calculateWageWithDailyStorage());
+
+// Running UC-7
+console.log("Total Wage: $", employee.getTotalWage());
+console.log("Day-wise Wages:\n", employee.getDayWithWages());
+console.log("Full Time Wage Days:\n", employee.getFullTimeWageDays());
+console.log("First Full Time Wage Day:\n", employee.getFirstFullTimeWageDay());
+console.log("Every Full Time Wage is 160:", employee.checkEveryFullTimeWage());
+console.log("Any Part Time Wage Present:", employee.checkAnyPartTimeWage());
+console.log("Number of Days Worked:", employee.getNumberOfDaysWorked());
