@@ -11,6 +11,9 @@ class Employee {
         this.dailyHoursArray = [];
         // UC-8: Map to store day-wise wages
         this.dailyWageMap = new Map(); 
+        // UC-10: To store day-wise objects
+        this.dailyRecordArray = []; 
+
         
     }
 
@@ -91,8 +94,24 @@ class Employee {
 
             // UC-8: Storing day and wage in Map
             this.dailyWageMap.set(totalWorkingDays, dailyWage);
+
+             // UC-10: Store the day, hours, and wage in an object
+            this.dailyRecordArray.push({
+                day: totalWorkingDays,
+                hoursWorked: workHours,
+                wageEarned: dailyWage
+            });
         }
     }
+
+    //UC-10
+    displayDailyRecords() {
+        console.log("Day | Hours Worked | Wage Earned");
+        this.dailyRecordArray.forEach(record => {
+            console.log(` ${record.day}  |      ${record.hoursWorked}       |     $${record.wageEarned}`);
+        });
+    }
+    
 
     // UC-7a: Calculate total wage using reduce
     getTotalWage() {
@@ -209,3 +228,8 @@ employee.dailyWageMap.forEach((wage, day) => {
 
 //UC-9
 employee.calculateTotalWageAndDayClassification();
+
+
+//UC-10
+console.log("\nUC10 - Daily Records (Day, Hours, Wage):");
+employee.displayDailyRecords();
