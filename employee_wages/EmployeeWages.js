@@ -3,7 +3,12 @@
 const PRESENT = 1;
 
 // Employee class
-class EmployeeAttendance {
+class Employee {
+
+    constructor() {
+        // UC-6: Array to store daily wages
+        this.dailyWageArray = [];
+    }
 
     // UC-1: Ability to Check Employee is Present or Absent
     // Method to check if an employee is present or absent
@@ -64,11 +69,31 @@ class EmployeeAttendance {
 
         return `Total Wage: $${totalWage}, Total Working Hours: ${totalWorkingHours}, Total Working Days: ${totalWorkingDays}`;
     }
+     // UC-6: Calculate Wage till total hours = 160 or days = 20 and store daily wages
+     calculateWageWithDailyStorage() {
+        const MAX_WORKING_DAYS = 20;
+        const MAX_WORKING_HOURS = 160;
+        let totalWorkingHours = 0;
+        let totalWorkingDays = 0;
+        let totalWage = 0;
+
+        while (totalWorkingDays < MAX_WORKING_DAYS && totalWorkingHours < MAX_WORKING_HOURS) {
+            totalWorkingDays++;
+            let workType = Math.floor(Math.random() * 3); // 0, 1, or 2
+            let workHours = this.getWorkingHours(workType);
+            totalWorkingHours += workHours;
+            let dailyWage = this.calculateDailyWage(workHours);
+            this.dailyWageArray.push(dailyWage); // store in the class array
+            totalWage += dailyWage;
+        }
+
+        console.log("Daily Wages: ", this.dailyWageArray);
+        return `Total Wage: $${totalWage}, Total Working Hours: ${totalWorkingHours}, Total Working Days: ${totalWorkingDays}`;
+    }
 }
 
 // Creating object of EmployeeAttendance class
-const employee = new EmployeeAttendance();
-
+const employee = new Employee();
 // Running UC-1
 console.log(employee.checkAttendance());
 
@@ -83,3 +108,6 @@ console.log(employee.calculateMonthlyWage());
 
 // Running UC-5
 console.log(employee.calculateWageWithCondition());
+
+// Running UC-6
+console.log(employee.calculateWageWithDailyStorage());
