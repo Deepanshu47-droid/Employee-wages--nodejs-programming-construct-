@@ -11,6 +11,7 @@ class Employee {
         this.dailyHoursArray = [];
         // UC-8: Map to store day-wise wages
         this.dailyWageMap = new Map(); 
+        
     }
 
     // UC-1: Ability to Check Employee is Present or Absent
@@ -137,6 +138,34 @@ class Employee {
         this.dailyWageMap.forEach(wage => totalWage += wage);
         return totalWage;
     }
+    // UC-9: Total Wage, Total Hours, and categorizing days
+    calculateTotalWageAndDayClassification() {
+        const totalWage = Array.from(this.dailyWageMap.values()).reduce((total, wage) => total + wage, 0);
+
+        const totalHours = this.dailyHoursArray.reduce((total, hours) => total + hours, 0);
+
+        const fullWorkingDays = [];
+        const partWorkingDays = [];
+        const noWorkingDays = [];
+
+        this.dailyHoursArray.forEach((hours, index) => {
+            if (hours === 8) {
+                fullWorkingDays.push(index + 1);
+            } else if (hours === 4) {
+                partWorkingDays.push(index + 1);
+            } else {
+                noWorkingDays.push(index + 1);
+            }
+        });
+
+        console.log(`\nTotal Wage And Day Classification Results:`);
+        console.log(`Total Wage: $${totalWage}`);
+        console.log(`Total Hours Worked: ${totalHours}`);
+        console.log(`Full Working Days: ${fullWorkingDays}`);
+        console.log(`Part Working Days: ${partWorkingDays}`);
+        console.log(`No Working Days: ${noWorkingDays}`);
+    }
+
 }
 
 // Creating object of EmployeeAttendance class
@@ -177,3 +206,6 @@ console.log("Day-wise Wages from Map:");
 employee.dailyWageMap.forEach((wage, day) => {
     console.log(`Day ${day}: $${wage}`);
 });
+
+//UC-9
+employee.calculateTotalWageAndDayClassification();
