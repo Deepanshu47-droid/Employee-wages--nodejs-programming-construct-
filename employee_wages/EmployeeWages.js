@@ -232,7 +232,7 @@ class EmployeePayrollData {
     // constructor
     constructor(...params) {
         this.id = params[0];
-        this._name = params[1];
+        this.name = params[1];
         this.salary = params[2];
         this.gender = params[3];
         this.startDate = params[4];
@@ -240,7 +240,18 @@ class EmployeePayrollData {
 
     // getter and setter method
     get name() { return this._name; }
-    set name(name) { this._name = name; }
+    set name(name) { 
+        // UC-14 Name Validation
+        let nameRegex = RegExp('^[A-Z][a-zA-Z]{2,}$');
+        try {
+            if (nameRegex.test(name))
+                this._name = name;
+            else
+                throw new Error(`Name ${name} is Invalid! It must start with a capital letter and have at least 3 characters.`);
+        } catch (error) {
+            console.log(error.message)
+        } 
+    }
 
     // method using arrow function
     toString = () => {
@@ -339,3 +350,16 @@ console.log(employeePayrollData.toString());
 // UC-13 Remaining properties
 let newEmployeePayrollData = new EmployeePayrollData(1, "Terrisa", 30000, "F", new Date());
 console.log(newEmployeePayrollData.toString());
+
+// UC-14 Name Validation
+// Valid Example
+let employeePayrollData2 = new EmployeePayrollData(1, "Mark", 30000, "M", new Date());
+console.log(employeePayrollData2.toString());
+
+// Invalid Example (will trigger error)
+employeePayrollData2.name = "john"; // Error: Name is Invalid!
+console.log(employeePayrollData2.toString());
+
+// Another Invalid Example
+let newEmployeePayrollData2 = new EmployeePayrollData(1, "terrisa", 30000, "F", new Date());
+console.log(newEmployeePayrollData2.toString());
