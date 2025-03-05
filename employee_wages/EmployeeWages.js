@@ -5,7 +5,7 @@ const PRESENT = 1;
 // Employee class
 class Employee {
 
-    constructor() {
+    constructor(empDailyHrsAndWageArr = []) {
         // UC-6: Array to store daily wages
         this.dailyWageArray = [];
         this.dailyHoursArray = [];
@@ -13,10 +13,10 @@ class Employee {
         this.dailyWageMap = new Map(); 
         // UC-10: To store day-wise objects
         this.dailyRecordArray = []; 
-
-        
+        //UC-11
+        this.empDailyHrsAndWageArr = empDailyHrsAndWageArr;    
     }
-
+    
     // UC-1: Ability to Check Employee is Present or Absent
     // Method to check if an employee is present or absent
     checkAttendance() {
@@ -103,14 +103,6 @@ class Employee {
             });
         }
     }
-
-    //UC-10
-    displayDailyRecords() {
-        console.log("Day | Hours Worked | Wage Earned");
-        this.dailyRecordArray.forEach(record => {
-            console.log(` ${record.day}  |      ${record.hoursWorked}       |     $${record.wageEarned}`);
-        });
-    }
     
 
     // UC-7a: Calculate total wage using reduce
@@ -185,6 +177,48 @@ class Employee {
         console.log(`No Working Days: ${noWorkingDays}`);
     }
 
+    //UC-10
+    displayDailyRecords() {
+        console.log("Day | Hours Worked | Wage Earned");
+        this.dailyRecordArray.forEach(record => {
+            console.log(` ${record.day}  |      ${record.hoursWorked}       |     $${record.wageEarned}`);
+        });
+    }
+
+    // UC-11
+    // UC 11A
+    calculateTotalWageAndHours() {
+        let totalWages = this.empDailyHrsAndWageArr
+            .filter(record => record.dailyWage > 0)
+            .reduce((totalWage, record) => totalWage + record.dailyWage, 0);
+
+        let totalHours = this.empDailyHrsAndWageArr
+            .filter(record => record.dailyWage > 0)
+            .reduce((totalHours, record) => totalHours + record.dailyHours, 0);
+
+        console.log(`UC 11A Total Hours: ${totalHours} Total Wages: ${totalWages}`);
+    }
+
+    // UC 11B
+    getFullWorkingDayStrings() {
+        return this.empDailyHrsAndWageArr
+            .filter(record => record.dailyHours == 8)
+            .map(record => `Day ${record.dayNum}: Hours ${record.dailyHours}, Wage $${record.dailyWage}`);
+    }
+    // UC 11C
+    getPartWorkingDayStrings() {
+        let partWorkingDayStrArr = this.empDailyHrsAndWageArr
+            .filter(record => record.dailyHours == 4)
+            .map(record => `Day ${record.dayNum}: Hours ${record.dailyHours}, Wage $${record.dailyWage}`);
+        return partWorkingDayStrArr;
+    }
+
+    // UC 11D
+    getNonWorkingDayStrings() {
+        return this.empDailyHrsAndWageArr
+            .filter(record => record.dailyHours == 0)
+            .map(record => `Day ${record.dayNum}: Hours ${record.dailyHours}, Wage $${record.dailyWage}`);
+    }
 }
 
 // Creating object of EmployeeAttendance class
@@ -233,3 +267,32 @@ employee.calculateTotalWageAndDayClassification();
 //UC-10
 console.log("\nUC10 - Daily Records (Day, Hours, Wage):");
 employee.displayDailyRecords();
+
+//UC-11
+let empDailyHrsAndWageArr = [
+    { dayNum: 1, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 2, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 3, dailyHours: 4, dailyWage: 80 },
+    { dayNum: 4, dailyHours: 0, dailyWage: 0 },
+    { dayNum: 5, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 6, dailyHours: 4, dailyWage: 80 },
+    { dayNum: 7, dailyHours: 0, dailyWage: 0 },
+    { dayNum: 8, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 9, dailyHours: 4, dailyWage: 80 },
+    { dayNum: 10, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 11, dailyHours: 0, dailyWage: 0 },
+    { dayNum: 12, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 13, dailyHours: 4, dailyWage: 80 },
+    { dayNum: 14, dailyHours: 0, dailyWage: 0 },
+    { dayNum: 15, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 16, dailyHours: 4, dailyWage: 80 },
+    { dayNum: 17, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 18, dailyHours: 0, dailyWage: 0 },
+    { dayNum: 19, dailyHours: 8, dailyWage: 160 },
+    { dayNum: 20, dailyHours: 4, dailyWage: 80 }
+];
+let employee2 = new Employee(empDailyHrsAndWageArr);
+employee2.calculateTotalWageAndHours();
+console.log("UC 11B Part Working Day Strings:", employee2.getFullWorkingDayStrings());
+console.log("UC 11C Part Working Day Strings:", employee2.getPartWorkingDayStrings());
+console.log("UC 11D Non Working Day Strings:", employee2.getNonWorkingDayStrings());
