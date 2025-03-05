@@ -221,6 +221,31 @@ class Employee {
     }
 }
 
+// UC-12 Employee payroll data
+class EmployeePayrollData {
+    // property
+    id;
+    salary;
+
+    // constructor
+    constructor(id, name, salary) {
+        this.id = id;
+        this._name = name;
+        this.salary = salary;
+    }
+
+    // getter and setter method
+    get name() { return this._name; }
+    set name(name) { this._name = name; }
+
+    // method using arrow function
+    toString = () => {
+        return "id=" + this.id + ", name='" + this.name + "', salary=" + this.salary;
+    };
+}
+
+
+
 // Creating object of EmployeeAttendance class
 const employee = new Employee();
 // Running UC-1
@@ -296,3 +321,9 @@ employee2.calculateTotalWageAndHours();
 console.log("UC 11B Part Working Day Strings:", employee2.getFullWorkingDayStrings());
 console.log("UC 11C Part Working Day Strings:", employee2.getPartWorkingDayStrings());
 console.log("UC 11D Non Working Day Strings:", employee2.getNonWorkingDayStrings());
+
+// UC-12 Employee payroll data
+let employeePayrollData = new EmployeePayrollData(1, "Mark", 30000);
+console.log(employeePayrollData.toString());
+employeePayrollData.name = "John";
+console.log(employeePayrollData.toString());
