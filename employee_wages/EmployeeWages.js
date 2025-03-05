@@ -224,10 +224,11 @@ class Employee {
 // UC-12 Employee payroll data
 class EmployeePayrollData {
     // property
-    id;
-    salary;
-    gender;
-    startDate;
+    _id;
+    _name;
+    _salary;
+    _gender;
+    _startDate;
 
     // constructor
     constructor(...params) {
@@ -251,6 +252,64 @@ class EmployeePayrollData {
         } catch (error) {
             console.log(error.message)
         } 
+    }
+
+    // UC-15
+    // ID validation
+    get id() { return this._id; }
+    set id(id) {
+        try {
+            let idPattern = /^[1-9][0-9]*$/;
+            if (!idPattern.test(id)) {
+                throw new Error("Invalid ID! It must be a positive non-zero number.");
+            }
+            this._id = id;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+    // UC-15
+    // Salary validation
+    get salary() { return this._salary; }
+    set salary(salary) {
+        try {
+            let salaryPattern = /^[1-9][0-9]*$/;
+            if (!salaryPattern.test(salary)) {
+                throw new Error("Invalid Salary! It must be a positive non-zero number.");
+            }
+            this._salary = salary;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    // UC-15
+    // Gender validation
+    get gender() { return this._gender; }
+    set gender(gender) {
+        try {
+            let genderPattern = /^[MF]$/;
+            if (!genderPattern.test(gender)) {
+                throw new Error("Invalid Gender! It must be either 'M' or 'F'.");
+            }
+            this._gender = gender;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    // UC-15
+    // Start Date validation
+    get startDate() { return this._startDate; }
+    set startDate(startDate) {
+        try {
+            if (!(startDate instanceof Date) || startDate > new Date()) {
+                throw new Error("Invalid Start Date! It cannot be a future date.");
+            }
+            this._startDate = startDate;
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 
     // method using arrow function
@@ -363,3 +422,11 @@ console.log(employeePayrollData2.toString());
 // Another Invalid Example
 let newEmployeePayrollData2 = new EmployeePayrollData(1, "terrisa", 30000, "F", new Date());
 console.log(newEmployeePayrollData2.toString());
+
+
+// UC-15
+let emp1 = new EmployeePayrollData(1, "John", 50000, "M", new Date("2023-01-01"));
+console.log(emp1.toString());
+
+let emp2 = new EmployeePayrollData(0, "jo", -5000, "X", new Date("2025-12-31"));
+console.log(emp2.toString());
